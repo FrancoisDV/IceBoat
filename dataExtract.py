@@ -41,7 +41,7 @@ def insert_data_sample(conn, task):
     return cur.lastrowid
 
 
-def parseJsonFileToSQLITE(file, conn):
+def parse_json_to_sqlite(file, conn):
     for prefix, event, value in ijson.parse(file):
         if (event) == ("start_map"):
             id = ""
@@ -60,14 +60,14 @@ def parseJsonFileToSQLITE(file, conn):
             insert_data_sample(conn, (id, marshal.dumps(band1), marshal.dumps(band2), str(angle),))
 
 
-def startUp(filename, db_file):
+def start_up(filename, db_file):
     conn = create_sqlite_connection(db_file)
     create_sql_table(conn)
-    parseJsonFileToSQLITE(open(filename),conn)
-    drawTestSample(conn)
+    parse_json_to_sqlite(open(filename), conn)
+    draw_test_samples(conn)
 
 
-def getFirstSamplesFromDB(conn):
+def get_first_samples_from_db(conn):
     try:
         sqlGet = "SELECT * from samples LIMIT 100"
         cur = conn.cursor()
@@ -84,8 +84,8 @@ def getFirstSamplesFromDB(conn):
         return None
 
 
-def drawTestSample(conn):
-    sampleList = getFirstSamplesFromDB(conn)
+def draw_test_samples(conn):
+    sampleList = get_first_samples_from_db(conn)
     for i in sampleList:
         hd = np.asarray(i.band1, dtype='float').reshape((75, 75))
         vd = np.asarray(i.band2, dtype='float').reshape((75, 75))
@@ -100,4 +100,4 @@ if __name__ == '__main__':
     db_file = "db.db"
     filename = "data/test.json"
 
-    startUp(filename, db_file)
+    start_up(filename, db_file)
