@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-class DataSample:
+class dataSample:
     def __init__(self, id, band1, band2, angle):
         self.id = id
         self.band1 = band1
@@ -25,9 +25,9 @@ def create_sqlite_connection(db_file):
 
 def create_sql_table(conn):
     try:
-        sqlCreateStatement = "CREATE TABLE IF NOT EXISTS samples ( id TEXT PRIMARY KEY, band1 TEXT NOT NULL, band2 TEXT NOT NULL, angle TEXT NOT NULL)"
-        c = conn.cursor()
-        c.execute(sqlCreateStatement)
+        sql_create_statement = "CREATE TABLE IF NOT EXISTS samples ( id TEXT PRIMARY KEY, band1 TEXT NOT NULL, band2 TEXT NOT NULL, angle TEXT NOT NULL)"
+        cur = conn.cursor()
+        cur.execute(sql_create_statement)
     except sqlite3.Error as e:
         print(e)
 
@@ -69,15 +69,15 @@ def start_up(filename, db_file):
 
 def get_first_samples_from_db(conn):
     try:
-        sqlGet = "SELECT * from samples LIMIT 100"
+        sql = "SELECT * from samples LIMIT 100"
         cur = conn.cursor()
-        cur.execute(sqlGet)
+        cur.execute(sql)
         rows = cur.fetchall()
-        dataSampleList = []
+        data_sample_list = []
         for row in rows:
-            sampleNew = DataSample(row[0], marshal.loads(row[1]), marshal.loads(row[2]), row[3])
-            dataSampleList.append(sampleNew)
-        return dataSampleList
+            sample = dataSample(row[0], marshal.loads(row[1]), marshal.loads(row[2]), row[3])
+            data_sample_list.append(sample)
+        return data_sample_list
 
     except sqlite3.Error as e:
         print(e)
@@ -85,8 +85,8 @@ def get_first_samples_from_db(conn):
 
 
 def draw_test_samples(conn):
-    sampleList = get_first_samples_from_db(conn)
-    for i in sampleList:
+    sample_list = get_first_samples_from_db(conn)
+    for i in sample_list:
         hd = np.asarray(i.band1, dtype='float').reshape((75, 75))
         vd = np.asarray(i.band2, dtype='float').reshape((75, 75))
         full = np.concatenate((hd, vd))
