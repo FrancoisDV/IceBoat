@@ -62,8 +62,8 @@ def parseJsonFileToSQLITE(file, conn):
 
 def startUp(filename, db_file):
     conn = create_sqlite_connection(db_file)
-    # create_table(conn)
-    # parseJsonFile(open(filename),conn)
+    create_sql_table(conn)
+    parseJsonFileToSQLITE(open(filename),conn)
     drawTestSample(conn)
 
 
