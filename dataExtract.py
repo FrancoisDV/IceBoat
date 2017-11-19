@@ -97,7 +97,7 @@ def draw_test_samples(conn):
 
 
 if __name__ == '__main__':
-    db_file = "db.db"
-    filename = "data/test.json"
+    DB_FILE = "db.db"
+    FILENAME = "data/test.json"
 
-    start_up(filename, db_file)
+    start_up(FILENAME, DB_FILE)
